@@ -77,7 +77,17 @@ def check_correction(grid_q):
     output:
         corrected: boolean whether correction is correct.
     """
-    # correct if even times logical X1,X2=> even number of times through certain edges
+    """
+    Conditions to check if a correction is correct: 
+    #1 the error is not equivalent to a logical gate.
+    - for the toric code assuming only Pauli X errors: the error chain can't be X1 and X2. 
+    To check this, we examine the commutation between the error and Z1 and Z2.
+    In a qubit grid, we check such commutation by examining if the error chain intersects with
+    the Z1 and Z2 chains at an odd or even number of qubits. If odd, the error anti-commutes with
+    Z1 and Z2, so they are logical gates and the correction fails. If even, the error commutes,
+    so they are not logical X1 or X2 gates and the correction is correct.
+    """
+    
     # upper row = X1
     if sum(grid_q[0]) % 2 == 1:
         return (False, 'X1')
