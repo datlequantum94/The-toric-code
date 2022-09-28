@@ -82,26 +82,26 @@ def check_correction(grid_q):
     if sum(grid_q[0]) % 2 == 1:
         return (False, 'X1')
     # odd rows = X2
-    if sum([grid_q[x][0] for x in range(1, len(grid_q), 2)]) == 1:
+    if sum([grid_q[x][0] for x in range(1, len(grid_q), 2)]) % 2 == 1:
         return (False, 'X2')
 
     # and if all stabilizers give outcome +1 => even number of qubit flips for each stabilizer
     # is this needed? or assume given stabilizer outcome is corrected for sure?
-    for row_idx in range(int(len(grid_q) / 2)):
-        for col_idx in range(len(grid_q[0])):
-            all_errors = 0
-            all_errors += grid_q[2 * row_idx][col_idx]  # above stabilizer
-            all_errors += grid_q[2 * row_idx + 1][col_idx]  # left of stabilizer
-            if row_idx < int(len(grid_q) / 2) - 1:  # not the last row
-                all_errors += grid_q[2 * (row_idx + 1)][col_idx]
-            else:  # last row
-                all_errors += grid_q[0][col_idx]
-            if col_idx < len(grid_q[2 * row_idx + 1]) - 1:  # not the last column
-                all_errors += grid_q[2 * row_idx + 1][col_idx + 1]
-            else:  # last column
-                all_errors += grid_q[2 * row_idx + 1][0]
-            if all_errors % 2 == 1:
-                return (False, 'stab', row_idx, col_idx)  # stabilizer gives error -1
+    # for row_idx in range(int(len(grid_q) / 2)):
+      #  for col_idx in range(len(grid_q[0])):
+       #     all_errors = 0
+        #    all_errors += grid_q[2 * row_idx][col_idx]  # above stabilizer
+         #   all_errors += grid_q[2 * row_idx + 1][col_idx]  # left of stabilizer
+          #  if row_idx < int(len(grid_q) / 2) - 1:  # not the last row
+           #     all_errors += grid_q[2 * (row_idx + 1)][col_idx]
+            #else:  # last row
+            #    all_errors += grid_q[0][col_idx]
+            #if col_idx < len(grid_q[2 * row_idx + 1]) - 1:  # not the last column
+            #    all_errors += grid_q[2 * row_idx + 1][col_idx + 1]
+            #else:  # last column
+            #   all_errors += grid_q[2 * row_idx + 1][0]
+            #if all_errors % 2 == 1:
+            #    return (False, 'stab', row_idx, col_idx)  # stabilizer gives error -1
 
     return (True, 'end')
     # other way of checking: for each row, look if no errors on qubits, => no loop around torus,so no gate applied.
